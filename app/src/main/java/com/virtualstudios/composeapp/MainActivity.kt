@@ -9,6 +9,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -19,6 +20,8 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -67,6 +70,23 @@ fun PreviewMyApp(){
 }
 
 @Composable
+fun DisplayTextWithClick(text: String){
+    var isSelected by remember {
+        mutableStateOf(false)
+    }
+    val backgroundColor by animateColorAsState(targetValue = if (isSelected) Color.Red else Color.Transparent)
+    
+    Text(text = text,
+    modifier = Modifier
+        .padding(24.dp)
+        .background(color = backgroundColor)
+        .clickable(onClick = { isSelected = !isSelected})
+    )
+}
+
+
+
+@Composable
 fun MyScreenContentWithScroll(){
     val names = List(1000){"Android $it"}
     val counterState = remember {
@@ -84,7 +104,7 @@ fun MyScreenContentWithScroll(){
 fun NamesListScrolling(names: List<String>, modifier: Modifier = Modifier){
     LazyColumn(modifier){
         items(items = names){ name ->
-            DisplayText(text = name)
+            DisplayTextWithClick(text = name)
             Divider(color = Color.Black)
         }
     }
